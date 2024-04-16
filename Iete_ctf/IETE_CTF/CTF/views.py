@@ -118,7 +118,7 @@ def timer(request):
     return start
 
 @csrf_exempt
-def calc():
+def calc(request):
     global endtime
     now = datetime.datetime.now()
     nowsec = now.hour * 60 * 60 + now.minute * 60 + now.second
