@@ -82,7 +82,7 @@
                                 <form method="POST"  id="my_event_form">
 				                {% csrf_token %}
                                 <a target="_blank" href="#!" class="btn btn-outline-secondary btn-shadow"><span class="fa fa-download mr-2"></span>Download</a>
-                                <a href="#hint" data-toggle="modal" data-target="#hint" class="btn btn-outline-secondary btn-shadow" onclick="getHint({{question.Qid}})"><span class="far fa-lightbulb mr-2"></span>Hint</a>
+                                <a href="#hint" data-toggle="modal" data-target="#hint" class="btn btn-outline-secondary btn-shadow" onclick="getHint('{{question.Qid}}')"><span class="far fa-lightbulb mr-2"></span>Hint</a>
                                 <div class="input-group mt-3" >
                                     <div class="ht-tm-element custom-control custom-radio">
                                         <input type="radio" value="E" id="customRadio2_p{{ question.Qid }}" name="customRadio" class="custom-control-input">
