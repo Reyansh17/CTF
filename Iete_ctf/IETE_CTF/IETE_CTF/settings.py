@@ -54,7 +54,7 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'IETE_CTF.urls'
-
+CSRF_TRUSTED_ORIGIN=['https://ietetiet.com']
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
