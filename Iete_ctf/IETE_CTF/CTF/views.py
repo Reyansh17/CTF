@@ -145,7 +145,7 @@ def signup(request):
             # time = timer()
             userprofile = UserProfile(user=user, Rid=recid, score=score)
             userprofile.save()
-            timer()
+            # timer()
             login(request, user)
 
             return redirect("inst")
