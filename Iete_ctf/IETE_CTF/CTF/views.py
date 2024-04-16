@@ -46,7 +46,7 @@ def hint(request):
             solved.save()
             userprofile.save()
             return HttpResponse(hint)
-    return render(request, 'CTF/404.html')
+    return render(request, 'ctf/404.html')
 
 
 def check(request):
@@ -150,7 +150,7 @@ def signup(request):
             return redirect("inst")
 
     elif request.method == 'GET':
-        return render(request, 'CTF/register.html')
+        return render(request, 'ctf/register.html')
 
 
 def login1(request):
@@ -169,7 +169,7 @@ def login1(request):
         else:
             messages.error(request, 'Invalid credentials!')
 
-    return render(request, 'CTF/login.html')
+    return render(request, 'ctf/login.html')
 
 
 def Quest(request):
@@ -181,7 +181,7 @@ def Quest(request):
         submission = Submission.objects.values().filter(user=userprofile).order_by('question_id')
         print(submission)
 
-        return render(request, 'CTF/quests.html',
+        return render(request, 'ctf/quests.html',
                       {'questions': questions, 'userprofile': userprofile, 'time': var, 'submission': submission})
     else:
         return HttpResponse("time is 0:0")
@@ -208,15 +208,15 @@ def leaderboard(request):
             print(sub_list)
             count -= 1
         else:
-            return render(request, 'CTF/hackerboard.html', context={'sub': sub_list, 'user': sorteduser})
+            return render(request, 'ctf/hackerboard.html', context={'sub': sub_list, 'user': sorteduser})
 
-    return render(request, 'CTF/hackerboard.html', context={'sub': sub_list, 'user': sorteduser})
+    return render(request, 'ctf/hackerboard.html', context={'sub': sub_list, 'user': sorteduser})
 
 
 '''''def first(request):
     var = calc()
     if var != 0:
-        return render(request, 'CTF/.html', context={'time': var})
+        return render(request, 'ctf/.html', context={'time': var})
     else:
         return HttpResponse("time is 0:0")'''
 # def leaderboard(request):
