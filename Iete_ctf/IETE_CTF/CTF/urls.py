@@ -1,6 +1,7 @@
 from django.urls import path
 
 from . import views
+from .views import download_file
 
 urlpatterns = [
     path('', views.index, name='index'),
@@ -13,5 +14,6 @@ urlpatterns = [
     path('logout', views.logout, name='logout'),
     path('check', views.check, name='check'),
     path('hint', views.hint, name='hint'),
-    path('leaderboard', views.leaderboard, name='leaderboard')
+    path('leaderboard', views.leaderboard, name='leaderboard'),
+    
 ]

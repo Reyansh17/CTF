@@ -4,6 +4,7 @@ from django.contrib import messages
 from django.http import HttpResponse
 import datetime
 import time
+from django.shortcuts import get_object_or_404
 from .models import UserProfile, Questions, Submission
 from django.contrib.auth.models import User, auth
 
@@ -190,6 +191,14 @@ def Quest(request):
 def logout(request):
     auth.logout(request)
     return redirect("/")
+
+def download_file(request , file_id):
+    file_obj = get_object_or_404(YourFileModel, id=file_id)  # Retrieve the file object from the database
+    file_content = open(file_obj.file.path, 'rb').read()  # Read the file content
+    response = HttpResponse(file_content, content_type='application/octet-stream')
+    response['Content-Disposition'] = f'attachment; filename="{file_obj.file.name}"'
+    return response
+    
 
 
 def leaderboard(request):
