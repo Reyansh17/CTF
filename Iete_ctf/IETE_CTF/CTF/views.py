@@ -108,7 +108,7 @@ def check(request):
     return HttpResponse("")
 
 @csrf_exempt
-def timer():
+def timer(request):
     start = datetime.datetime.now()
     starttime = start.hour * 60 * 60 + start.minute * 60 + start.second
     global duration
