@@ -1,4 +1,4 @@
-{
+	{
 	"builds": [
 	  {
 		"src": "IETE_CTF/wsgi.py",

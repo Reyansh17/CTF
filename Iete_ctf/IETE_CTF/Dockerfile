@@ -21,5 +21,5 @@ RUN pip install --upgrade pip && pip install -r requirements.txt
 # Copy project
 COPY . /app/
 
-# Run the application
+# Run the application df
 CMD ["gunicorn", "--workers=4", "--bind", "0.0.0.0:8000", "your_project.wsgi:application"]
