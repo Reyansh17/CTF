@@ -172,7 +172,7 @@ def login1(request):
 
     return render(request, 'ctf/login.html')
 
-@csrf_exempt
+
 def Quest(request):
     var = calc()
     if var != 0:
