@@ -22,4 +22,4 @@ RUN pip install --upgrade pip && pip install -r requirements.txt
 COPY . /app/
 
 # Run the application
-CMD ["gunicorn", "--workers=4", "--bind", "0.0.0.0:8000", "your_project.wsgi:application"]
+CMD ["gunicorn", "--workers=4", "--bind", "0.0.0.0:8000", "IETE_CTF.wsgi:application"]
