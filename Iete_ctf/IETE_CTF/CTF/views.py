@@ -12,19 +12,19 @@ duration = 2700
 
 
 def index(request):
-    return render(request, 'CTF/index.html')
+    return render(request, 'ctf/index.html')
 
 
 def error(request):
-    return render(request, 'CTF/404.html')
+    return render(request, 'ctf/404.html')
 
 
 def about(request):
-    return render(request, 'CTF/about.html')
+    return render(request, 'ctf/about.html')
 
 
 def inst(request):
-    return render(request, 'CTF/instructions.html')
+    return render(request, 'ctf/instructions.html')
 
 
 def hint(request):
