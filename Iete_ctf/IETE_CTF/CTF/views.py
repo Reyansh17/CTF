@@ -107,7 +107,7 @@ def check(request):
                 return HttpResponse('0')
     return HttpResponse("")
 
-@csrf_exempt
+
 def timer():
     start = datetime.datetime.now()
     starttime = start.hour * 60 * 60 + start.minute * 60 + start.second
@@ -117,7 +117,7 @@ def timer():
     print(starttime)
     return start
 
-@csrf_exempt
+
 def calc():
     global endtime
     now = datetime.datetime.now()
