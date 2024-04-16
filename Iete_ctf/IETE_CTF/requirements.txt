@@ -11,3 +11,4 @@ requests
 # torch
 # torchvision
 uvicorn
+django-cors-headers
