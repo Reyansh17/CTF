@@ -7,7 +7,7 @@ numpy
 opencv-contrib-python
 pandas
 requests
-tensorflow
-torch
-torchvision
+# tensorflow
+# torch
+# torchvision
 uvicorn
