@@ -7,4 +7,4 @@ services:
     ports:
       - "80:8000"
     # command: gunicorn --workers=4 --bind 0.0.0.0:8000 IETE_CTF.wsgi:application
-    command: python manage.py runserver
+    command: python manage.py runserver 0.0.0.0

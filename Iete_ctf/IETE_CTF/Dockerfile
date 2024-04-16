@@ -22,4 +22,4 @@ RUN pip install --upgrade pip && pip install -r requirements.txt
 COPY . /app/
 
 # Run the application
-CMD ["python", "manage.py", "runserver"]
+CMD ["python", "manage.py", "runserver","0.0.0.0"]
