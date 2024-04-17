@@ -3,7 +3,7 @@ from django.contrib.auth import login, authenticate
 from django.contrib import messages
 from django.http import HttpResponse
 import datetime
-from django.views.decorators.csrf import csrf_exempt
+# from django.views.decorators.csrf import csrf_exempt
 import time
 from .models import UserProfile, Questions, Submission
 from django.contrib.auth.models import User, auth
@@ -13,23 +13,23 @@ duration = 2700
 
 
 
-@csrf_exempt
+
 def index(request):
     return render(request, 'ctf/index.html')
 
-@csrf_exempt
+
 def error(request):
     return render(request, 'ctf/404.html')
 
-@csrf_exempt
+
 def about(request):
     return render(request, 'ctf/about.html')
 
-@csrf_exempt
+
 def inst(request):
     return render(request, 'ctf/instructions.html')
 
-@csrf_exempt
+
 def hint(request):
     if request.method == 'POST':
         question = Questions.objects.get(Qid=request.POST.get('id'))
@@ -51,7 +51,7 @@ def hint(request):
             return HttpResponse(hint)
     return render(request, 'ctf/404.html')
 
-@csrf_exempt
+
 def check(request):
     user = User.objects.get(username=request.user.username)
     userprofile = UserProfile.objects.get(user=user)
@@ -131,7 +131,7 @@ def calc():
     else:
         return 0
 
-@csrf_exempt
+
 def signup(request):
     if request.method == 'POST':
         recid = request.POST.get('reciept_id')
@@ -155,7 +155,7 @@ def signup(request):
     elif request.method == 'GET':
         return render(request, 'ctf/register.html')
 
-@csrf_exempt
+
 def login1(request):
     if request.method == 'POST':
         username = request.POST['username']
@@ -189,12 +189,12 @@ def Quest(request):
     else:
         return HttpResponse("time is 0:0" + str(var))
 
-@csrf_exempt
+
 def logout(request):
     auth.logout(request)
     return redirect("/")
 
-@csrf_exempt
+
 def leaderboard(request):
     # data = Submission.objects.all().order_by("-curr_score", "-sub_time")
     sorteduser = UserProfile.objects.all().order_by("-score","latest_sub_time")
