@@ -123,8 +123,8 @@ def calc():
     now = datetime.datetime.now()
     nowsec = now.hour * 60 * 60 + now.minute * 60 + now.second
     diff = endtime - nowsec
-    print(diff)
-    if nowsec <= endtime:
+    print(nowsec,endtime)
+    if diff <= endtime:
         return diff
     else:
         return 0
