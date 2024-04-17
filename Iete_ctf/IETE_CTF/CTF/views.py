@@ -185,7 +185,7 @@ def Quest(request):
         return render(request, 'ctf/quests.html',
                       {'questions': questions, 'userprofile': userprofile, 'time': var, 'submission': submission})
     else:
-        return HttpResponse("time is 0:0")
+        return HttpResponse("time is 0:0" + str(var))
 
 @csrf_exempt
 def logout(request):
