@@ -13,5 +13,6 @@ urlpatterns = [
     path('logout', views.logout, name='logout'),
     path('check', views.check, name='check'),
     path('hint', views.hint, name='hint'),
+    path('download_que_files/<int:qid>',views.download_que_files,name='download_que_files'),
     path('leaderboard', views.leaderboard, name='leaderboard')
 ]

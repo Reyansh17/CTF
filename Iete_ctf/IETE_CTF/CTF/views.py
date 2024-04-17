@@ -215,6 +215,20 @@ def leaderboard(request):
 
     return render(request, 'ctf/hackerboard.html', context={'sub': sub_list, 'user': sorteduser})
 
+from django.shortcuts import get_object_or_404
+from django.shortcuts import render, HttpResponse
+from django.http import FileResponse
+
+
+def download_que_files(request,qid):
+    if qid == '':
+        return Response("No Question id found")
+    que = get_object_or_404(Questions, pk=qid)
+    file_path = que.file.path
+    response = FileResponse(open(file_path, 'rb'))
+    response['Content-Type'] = 'application/octet-stream'
+    response['Content-Disposition'] = f'attachment; filename="{que.file.name}"'
+    return response
 
 '''''def first(request):
     var = calc()
