@@ -8,7 +8,7 @@ import time
 from .models import UserProfile, Questions, Submission
 from django.contrib.auth.models import User, auth
 
-endtime = 62566
+endtime = 52826
 duration = 2700
 
 
@@ -187,7 +187,8 @@ def Quest(request):
         return render(request, 'ctf/quests.html',
                       {'questions': questions, 'userprofile': userprofile, 'time': var, 'submission': submission})
     else:
-        return HttpResponse("time is 0:0" + str(var))
+        # return HttpResponse("time is 0:0" + str(var))
+        return HttpResponse("<img src='https://images.unsplash.com/photo-1498811008858-d95a730b2ffc?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3'>")
 
 
 def logout(request):
