@@ -8,8 +8,10 @@ import time
 from .models import UserProfile, Questions, Submission
 from django.contrib.auth.models import User, auth
 
-endtime = 0
+endtime = 62566
 duration = 2700
+
+
 
 @csrf_exempt
 def index(request):
@@ -124,7 +126,7 @@ def calc():
     nowsec = now.hour * 60 * 60 + now.minute * 60 + now.second
     diff = endtime - nowsec
     print(nowsec,endtime)
-    if diff <= endtime:
+    if nowsec <= endtime:
         return diff
     else:
         return 0
