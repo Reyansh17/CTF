@@ -24,6 +24,8 @@ class UserProfile(models.Model):
     totlesub = models.IntegerField(default=0)
     latest_sub_time = models.CharField(default="00:00", max_length=10)
     time = models.TimeField(default="00:00")
+    
+    
 
     def __str__(self):
         return self.user.username

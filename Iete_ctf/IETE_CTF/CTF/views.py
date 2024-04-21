@@ -2,21 +2,23 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate
 from django.contrib import messages
 from django.http import HttpResponse
+from django.core.cache import cache
 import datetime
+from django.contrib.sessions.models import Session
 # from django.views.decorators.csrf import csrf_exempt
 import time
 from .models import UserProfile, Questions, Submission
 from django.contrib.auth.models import User, auth
 
-endtime = 52826
-duration = 2700
+endtime = 54952
+duration = 27000
 
 
 
 
 def index(request):
     return render(request, 'ctf/index.html')
-
+ 
 
 def error(request):
     return render(request, 'ctf/404.html')
@@ -29,29 +31,42 @@ def about(request):
 def inst(request):
     return render(request, 'ctf/instructions.html')
 
+def team(request):
+    return render (request,'ctf/team.html')
+
 
 def hint(request):
     if request.method == 'POST':
-        question = Questions.objects.get(Qid=request.POST.get('id'))
+        question_id = request.POST.get('id')
+        question = Questions.objects.get(Qid=question_id)
         hint = question.Hint
-        questionPoints = question.points
+        question_points = question.points
         user = User.objects.get(username=request.user.username)
         userprofile = UserProfile.objects.get(user=user)
         try:
-            solved = Submission.objects.filter(question=question, user=userprofile)
+            solved = Submission.objects.get(question=question, user=userprofile)
             return HttpResponse(hint)
         except Submission.DoesNotExist:
-            solved = Submission()
-            userprofile.score -= questionPoints * 0.1
-            solved.question = question
-            solved.user = userprofile
-            solved.curr_score = userprofile.score
-            solved.save()
-            userprofile.save()
-            return HttpResponse(hint)
+            if userprofile.score >= question_points * 0.1:  # Check if user has enough score to deduct
+                if not cache.get(f"hint_deducted_{question_id}_{userprofile.user.id}"):  # Check if hint deduction has already been made
+                    userprofile.score -= question_points * 0.1  # Deduct 10% of question points for viewing the hint
+                    cache.set(f"hint_deducted_{question_id}_{userprofile.user.id}", True)  # Mark hint deduction as made
+                else:
+                    return HttpResponse("You have already viewed the hint.")  # Return if hint has already been viewed
+                # Deducted 10% from the total score allotted to the question, so adding only 90% to the user's total score
+                userprofile.score += question_points * 0.9
+                userprofile.save()
+
+                solved = Submission.objects.create(
+                    question=question,
+                    user=userprofile,
+                    curr_score=userprofile.score
+                )
+                return HttpResponse(hint)
+            else:
+                return HttpResponse("You don't have enough score to view this hint!")
     return render(request, 'ctf/404.html')
-
-
+    
 def check(request):
     user = User.objects.get(username=request.user.username)
     userprofile = UserProfile.objects.get(user=user)
@@ -63,7 +78,7 @@ def check(request):
         level = req.get('customRadio')
         quest = Questions.objects.get(Qid=int(Qid))
         quest.Qid = Qid
-        if level == None:
+        if level is None:
             return HttpResponse("-1")
         else:
             quest.level = level
@@ -79,7 +94,8 @@ def check(request):
             solved = Submission.objects.filter(question=quest, user=userprofile)
 
             if flag == quest.flag:
-                if not solved:
+                if not solved:  # Check if the question is not already solved by the user
+                    # Proceed with marking the question as solved
                     solved = Submission()
                     userprofile.score += quest.points
                     solved.question = quest
@@ -90,8 +106,6 @@ def check(request):
                     sec = duration - sec
                     solved.sub_time = time.strftime("%H:%M:%S", time.gmtime(sec))
                     userprofile.latest_sub_time = solved.sub_time
-                    # solved.sub_time = '{}:{}:{}'.format(hour, min, sec)
-                    print(solved.sub_time)
                     quest.solved_by += 1
                     solved.solved = 1
                     userprofile.totlesub += 1
@@ -100,15 +114,14 @@ def check(request):
                     quest.save()
                     print(userprofile.score)
                     print("FLAG IS CORRECT!")
-                    return HttpResponse('1')
-
+                    return HttpResponse('1')  # Return success code indicating correct flag submission
                 else:
-                    return HttpResponse('2')
+                    # If the question is already solved, but the flag is correct, return '1'
+                    return HttpResponse('1')  # Return code indicating correct flag submission
             else:
                 print("INCORRECT")
-                return HttpResponse('0')
+                return HttpResponse('0')  # Return code indicating incorrect flag submission
     return HttpResponse("")
-
 
 def timer():
     start = datetime.datetime.now()
@@ -125,11 +138,12 @@ def calc():
     now = datetime.datetime.now()
     nowsec = now.hour * 60 * 60 + now.minute * 60 + now.second
     diff = endtime - nowsec
-    print(nowsec,endtime)
-    if nowsec <= endtime:
+    print(nowsec, endtime)
+    if nowsec < endtime:  # Change the comparison from <= to <
         return diff
     else:
         return 0
+
 
 
 def signup(request):
@@ -147,7 +161,7 @@ def signup(request):
             # time = timer()
             userprofile = UserProfile(user=user, Rid=recid, score=score)
             userprofile.save()
-            # timer()
+            timer()
             login(request, user)
 
             return redirect("inst")
@@ -176,6 +190,7 @@ def login1(request):
 
 
 def Quest(request):
+    timer()  # Start the timer automatically when the user reaches the quest page
     var = calc()
     if var != 0:
         user = User.objects.get(username=request.user.username)
@@ -187,7 +202,6 @@ def Quest(request):
         return render(request, 'ctf/quests.html',
                       {'questions': questions, 'userprofile': userprofile, 'time': var, 'submission': submission})
     else:
-        # return HttpResponse("time is 0:0" + str(var))
         return HttpResponse("<img src='https://images.unsplash.com/photo-1498811008858-d95a730b2ffc?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3'>")
 
 
